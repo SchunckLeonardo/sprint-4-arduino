@@ -1,0 +1,222 @@
+[
+    {
+        "id": "679a4c529fdb9672",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f09a95def78f1928",
+        "type": "serial in",
+        "z": "679a4c529fdb9672",
+        "name": "",
+        "serial": "210467094d373efc",
+        "x": 130,
+        "y": 320,
+        "wires": [
+            [
+                "138cb30a5770b00f",
+                "d3e381abdad265df"
+            ]
+        ]
+    },
+    {
+        "id": "d3e381abdad265df",
+        "type": "json",
+        "z": "679a4c529fdb9672",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 290,
+        "y": 380,
+        "wires": [
+            [
+                "24ecc82d39e47577",
+                "d1676ecd21ddde9e"
+            ]
+        ]
+    },
+    {
+        "id": "24ecc82d39e47577",
+        "type": "debug",
+        "z": "679a4c529fdb9672",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1080,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "d1676ecd21ddde9e",
+        "type": "function",
+        "z": "679a4c529fdb9672",
+        "name": "function 1",
+        "func": "let B = {\n    payload: {\n        \"variable\": \"potencia\",\n        \"unit\": \"Watts\",\n        \"value\": msg.payload.potencia\n    }\n}\n\nreturn B;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 260,
+        "wires": [
+            [
+                "996e86e907f55b38"
+            ]
+        ]
+    },
+    {
+        "id": "996e86e907f55b38",
+        "type": "mqtt out",
+        "z": "679a4c529fdb9672",
+        "name": "",
+        "topic": "tago/data/post",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "d322c9677de1fd74",
+        "x": 1180,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "1faf39b7341d7b91",
+        "type": "json",
+        "z": "679a4c529fdb9672",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 180,
+        "wires": [
+            [
+                "c2e37edda85c3bfc",
+                "a578783ccf48df7c"
+            ]
+        ]
+    },
+    {
+        "id": "138cb30a5770b00f",
+        "type": "http request",
+        "z": "679a4c529fdb9672",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.openweathermap.org/data/2.5/weather?lat=-23.540495&lon=-46.7333023&appid=0de88244e7dc4b0246b9bf5c4501b3d4&lang=pt_br",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 310,
+        "y": 320,
+        "wires": [
+            [
+                "1faf39b7341d7b91"
+            ]
+        ]
+    },
+    {
+        "id": "c2e37edda85c3bfc",
+        "type": "function",
+        "z": "679a4c529fdb9672",
+        "name": "function 3",
+        "func": "let C = {\n    payload: {\n        \"variable\": \"descricao\",\n        \"value\": msg.payload.weather[0].description\n    }\n}\n\nreturn C;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 220,
+        "wires": [
+            [
+                "996e86e907f55b38",
+                "24ecc82d39e47577"
+            ]
+        ]
+    },
+    {
+        "id": "a578783ccf48df7c",
+        "type": "function",
+        "z": "679a4c529fdb9672",
+        "name": "function 4",
+        "func": "let C = {\n    payload: {\n        \"variable\": \"Vento\",\n        \"unit\": \"km/h\",\n        \"value\": msg.payload.wind.speed\n    }\n}\n\nreturn C;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 160,
+        "wires": [
+            [
+                "996e86e907f55b38",
+                "24ecc82d39e47577"
+            ]
+        ]
+    },
+    {
+        "id": "210467094d373efc",
+        "type": "serial-port",
+        "serialport": "COM9",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "d322c9677de1fd74",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mqtt.tago.io",
+        "port": "1883",
+        "clientid": "leonardo_Schunck_id",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
